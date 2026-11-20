@@ -1,0 +1,8 @@
+name: astrbot_plugin_reminder
+display_name: Reminder 到点提醒
+desc: 读取 paadm 的 reminders 数据库，到点后通过 QQ/WebChat 等平台主动推送提醒，并把状态写回 triggered
+short_desc: 数据库轮询 + 主动推送 + /reminder 命令
+version: 1.0.0
+author: Huy4z
+astrbot_version: ">=4.29,<5"
+repo: https://github.com/Huy4z/astrbot_plugin_reminder

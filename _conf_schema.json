@@ -1,0 +1,98 @@
+{
+  "enabled": {
+    "type": "bool",
+    "description": "是否启用自动提醒轮询",
+    "hint": "关闭后不再自动扫描；/reminder check 手动扫描仍然可用",
+    "default": true
+  },
+  "db_path": {
+    "type": "string",
+    "description": "paadm 业务数据库路径（容器内）",
+    "hint": "默认 /AstrBot/data/paa/paa.db，需与 paadm 插件使用同一个库",
+    "default": "/AstrBot/data/paa/paa.db"
+  },
+  "poll_interval_seconds": {
+    "type": "int",
+    "description": "轮询间隔（秒）",
+    "hint": "默认 20 秒；提醒时间精度为分钟，20 秒足够，不建议小于 5 秒",
+    "default": 20
+  },
+  "startup_delay_seconds": {
+    "type": "int",
+    "description": "启动后等待 AstrBot 加载完成的最长秒数",
+    "hint": "默认 10 秒；收到 on_astrbot_loaded 后会提前开始",
+    "default": 10
+  },
+  "max_overdue_hours": {
+    "type": "int",
+    "description": "最多补发多少小时内的过期提醒",
+    "hint": "默认 24；超过阈值的 pending 提醒会被跳过并保持 pending，避免停机后一次性轰炸。设为 0 表示不限制",
+    "default": 24
+  },
+  "batch_limit": {
+    "type": "int",
+    "description": "单轮最多处理多少条提醒",
+    "hint": "默认 20；积压较多时会分多轮发送，避免刷屏",
+    "default": 20
+  },
+  "message_template": {
+    "type": "string",
+    "description": "提醒消息模板",
+    "hint": "可用占位符：{content} {remind_at} {remind_at_local} {item_id} {user_id} {reminder_id}",
+    "default": "⏰ 提醒：{content}"
+  },
+  "timezone": {
+    "type": "string",
+    "description": "展示时间使用的时区",
+    "hint": "默认 Asia/Shanghai；容器缺少 tzdata 时会退化为 UTC+8",
+    "default": "Asia/Shanghai"
+  },
+  "max_message_chars": {
+    "type": "int",
+    "description": "单条提醒消息最大字符数",
+    "hint": "默认 800；超出会截断并加省略号",
+    "default": 800
+  },
+  "retry_base_seconds": {
+    "type": "int",
+    "description": "发送失败后的首次重试间隔（秒）",
+    "hint": "默认 30；之后按 2 倍指数退避",
+    "default": 30
+  },
+  "retry_max_seconds": {
+    "type": "int",
+    "description": "重试间隔上限（秒）",
+    "hint": "默认 600（10 分钟）",
+    "default": 600
+  },
+  "max_delivery_attempts": {
+    "type": "int",
+    "description": "同一条提醒最多自动重试多少次",
+    "hint": "默认 20；达到后暂停自动重试，提醒仍保持 pending，可用 /reminder check 重置",
+    "default": 20
+  },
+  "send_interval_ms": {
+    "type": "int",
+    "description": "连续发送多条提醒之间的间隔（毫秒）",
+    "hint": "默认 300，避免触发平台限流",
+    "default": 300
+  },
+  "platform_map_json": {
+    "type": "string",
+    "description": "provider → 平台 ID 映射（JSON 对象，可留空自动匹配）",
+    "hint": "例如 {\"qq\": \"<PLATFORM_ID>\"}。留空时按平台类型自动匹配；同名 provider 有多个平台时才需要指定",
+    "default": ""
+  },
+  "session_type_map_json": {
+    "type": "string",
+    "description": "provider → 会话类型映射（JSON 对象，可留空）",
+    "hint": "例如 {\"qq\": \"FriendMessage\"}。默认私聊 FriendMessage；群聊必须在 session_overrides_json 里写完整 UMO",
+    "default": ""
+  },
+  "session_overrides_json": {
+    "type": "string",
+    "description": "手动指定某个用户的完整 UMO（JSON 对象，可留空）",
+    "hint": "键可以是 user_id、provider:external_user_id 或 provider:<provider>，值为 platform_id:会话类型:会话ID。群聊或特殊会话使用",
+    "default": ""
+  }
+}
